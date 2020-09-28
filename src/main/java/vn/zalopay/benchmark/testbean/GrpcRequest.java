@@ -1,6 +1,8 @@
 package vn.zalopay.benchmark.testbean;
 
 import com.google.protobuf.DynamicMessage;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.util.JsonFormat;
 import vn.zalopay.benchmark.core.ClientCaller;
 import io.grpc.StatusRuntimeException;
 import lombok.Getter;
@@ -41,11 +43,26 @@ public class GrpcRequest extends AbstractSampler implements TestBean {
         try {
             DynamicMessage resp = clientCaller.call(DEADLINE);
 
+//            res.sampleEnd();
+//            res.setSuccessful(true);
+//            res.setResponseData(resp.toString().getBytes());
+//            res.setResponseMessage("Success");
+//            res.setResponseCodeOK();
+            try {
             res.sampleEnd();
             res.setSuccessful(true);
-            res.setResponseData(resp.toString().getBytes());
+            res.setResponseData(JsonFormat.printer().print(resp).getBytes());
             res.setResponseMessage("Success");
+            res.setDataType(SampleResult.TEXT);
             res.setResponseCodeOK();
+            } catch (InvalidProtocolBufferException e) {
+                res.sampleEnd();
+                res.setSuccessful(false);
+                res.setResponseMessage("Exception: " + e.getMessage());
+                res.setResponseData(e.getMessage().getBytes());
+                res.setDataType(SampleResult.TEXT);
+                res.setResponseCode("500");
+            }
         } catch (StatusRuntimeException e) {
             res.sampleEnd();
             res.setSuccessful(false);
