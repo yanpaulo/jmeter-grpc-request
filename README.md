@@ -110,3 +110,11 @@ mvn clean install package
 - Thanks: [grpc-ecosystem/polyglot](https://github.com/grpc-ecosystem/polyglot)
 - More: https://stackoverflow.com/q/61133529/9488752
 - If you like working with the request message builder at here [zalopay-oss/jmeter-grpc-plugin](https://github.com/zalopay-oss/jmeter-grpc-plugin)
+
+## Fork by yanpaulo
+
+This fork was created to add some features which were not available on the original plugin by zalopay-oss as listed below:
+- Support for TLS NPN fallback when ALPN isn't supported. 
+- Support for relative paths in the "Proto Root" and "Library Directory" fields.
+
+Please note that both ALPN and NPN require at least OpenJDK 8u252 as of https://github.com/jetty-project/jetty-alpn-agent, https://mail.openjdk.java.net/pipermail/jdk8u-dev/2020-April/011566.html, https://mail.openjdk.java.net/pipermail/jdk8u-dev/2019-November/010573.html
